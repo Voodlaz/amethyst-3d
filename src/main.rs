@@ -1,16 +1,28 @@
 use amethyst::{
-    core::transform::TransformBundle,
+    assets::{Format as AssetFormat, Handle, Loader},
+    core::{math::Vector3, Transform, TransformBundle},
+    ecs::{World, WorldExt},
+    error::Error,
+    input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{
-        plugins::{RenderShaded3D, RenderToWindow},
-        types::DefaultBackend,
+        camera::Camera,
+        light::{Light, PointLight},
+        mtl::{Material, MaterialDefaults},
+        palette::{Srgb, Srgba},
+        plugins::{RenderShaded3D, RenderSkybox, RenderToWindow},
+        rendy::{
+            mesh::{MeshBuilder, Normal, Position, TexCoord},
+            texture::palette::load_from_srgba,
+        },
+        types::{DefaultBackend, Mesh, MeshData},
         RenderingBundle,
     },
     utils::application_root_dir,
 };
 
 mod objects;
-use crate::objects::{camera, cube};
+use crate::objects::{camera, sphere};
 
 struct MyState;
 
