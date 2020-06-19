@@ -30,29 +30,18 @@ use crate::objects::{camera, sphere};
 
 struct MyState;
 
-#[derive(Clone, Debug)]
-struct Custom;
+impl SimpleState for MyState {
+    fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
+        let world = data.world;
 
-impl AssetFormat for Custom {
-    fn name(&self) -> &'static str {
-        "CUSTOM"
-    }
+        camera::init_camera(world);
 
-    fn import_simple() -> Result<MeshData, Error> {
-        let sphere_obj = BufReader::new(File::open("assets/sphere_mesh.obj")?);
-        let sphere: Obj = load_obj(sphere_obj)?;
+        let sphere_obj = BufReader::new(File::open("assets/sphere_mesh.obj"));
+        let sphere: Obj = load_obj(sphere_obj);
 
         Ok(MeshBuilder::new()
             .with_vertices(sphere.vertices)
-            .into())
-    }
-}
-
-impl SimpleState for MyState {
-    fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
-        camera::init_camera(world);
-
-        // what I should put here
+            .into())}
 }
 
 fn main() -> amethyst::Result<()> {
