@@ -21,8 +21,6 @@ use amethyst::{
     utils::application_root_dir,
 };
 
-use std::fs::File;
-use std::io::BufReader;
 use obj::{load_obj, Obj};
 
 mod objects;
@@ -36,7 +34,7 @@ impl SimpleState for MyState {
 
         camera::init_camera(world);
 
-        let sphere_obj = BufReader::new(File::open("assets/sphere_mesh.obj"));
+        // let sphere_obj = How I can load my obj here
         let sphere: Obj = load_obj(sphere_obj);
 
         Ok(MeshBuilder::new()
