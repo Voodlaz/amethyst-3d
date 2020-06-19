@@ -1,4 +1,6 @@
-mtllib untitled.mtl
+# Blender v2.83.0 OBJ File: ''
+# www.blender.org
+mtllib sphere_mesh.mtl
 o Sphere
 v 0.000000 0.980785 -0.195090
 v 0.000000 0.923880 -0.382683
@@ -1553,7 +1555,7 @@ vn -0.0624 -0.7715 -0.6332
 vn -0.0865 0.4696 -0.8786
 vn -0.0464 -0.8810 -0.4709
 vn -0.0938 0.2890 -0.9527
-usemtl Material.001
+usemtl None
 s off
 f 482/1/1 481/2/1 24/3/1 25/4/1
 f 8/5/2 7/6/2 17/7/2 18/8/2
