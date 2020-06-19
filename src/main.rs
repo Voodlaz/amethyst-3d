@@ -20,6 +20,7 @@ use amethyst::{
     },
     utils::application_root_dir,
 };
+use std::io::Cursor;
 
 mod objects;
 use crate::objects::{camera, sphere};
@@ -27,15 +28,41 @@ use crate::objects::{camera, sphere};
 struct MyState;
 
 #[derive(Clone, Debug)]
-struct Custom;
+struct ObjMesh;
 
-impl AssetFormat<MeshData> for Custom {
+impl AssetFormat<MeshData> for ObjMesh {
     fn name(&self) -> &'static str {
-        "CUSTOM"
+        "OBJ"
     }
 
+    /// Reads the given bytes and produces asset data.
     fn import_simple(&self, bytes: Vec<u8>) -> Result<MeshData, Error> {
-        // parse here
+        let input = Cursor::new(bytes);
+        let sphere: Obj = load_obj(input)?;
+
+        let capacity = sphere.vertices.len() * 3;
+        let mut pos = Vec::with_capacity(capacity);
+        let mut norm = Vec::with_capacity(capacity);
+
+        for vertex in sphere.vertices {
+            pos.push(Position([
+                vertex.position[0],
+                vertex.position[1],
+                vertex.position[2],
+            ]));
+
+            norm.push(Normal([
+                vertex.normal[0],
+                vertex.normal[1],
+                vertex.normal[2]
+            ]))
+        }
+
+        Ok(MeshBuilder::new()
+            .with_vertices(pos)
+            .with_vertices(norm)
+            .into())
+    }
 }
 
 impl SimpleState for MyState {
