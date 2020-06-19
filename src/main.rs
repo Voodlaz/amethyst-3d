@@ -21,26 +21,31 @@ use amethyst::{
     utils::application_root_dir,
 };
 
-use obj::{load_obj, Obj};
-
 mod objects;
 use crate::objects::{camera, sphere};
 
 struct MyState;
 
+#[derive(Clone, Debug)]
+struct Custom;
+
+impl AssetFormat<MeshData> for Custom {
+    fn name(&self) -> &'static str {
+        "CUSTOM"
+    }
+
+    fn import_simple(&self, bytes: Vec<u8>) -> Result<MeshData, Error> {
+        // parse here
+}
+
 impl SimpleState for MyState {
-    fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
+    fn on_start(&mut self,data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
 
         camera::init_camera(world);
 
-        // let sphere_obj = How I can load my obj here
-        let sphere: Obj = load_obj(sphere_obj);
-
-        Ok(MeshBuilder::new()
-            .with_vertices(sphere.vertices)
-            .into())}
-}
+        // how I can load this
+    }
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
