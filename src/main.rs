@@ -1,18 +1,16 @@
 use amethyst::{
     assets::{Format as AssetFormat, Handle, Loader},
     core::{math::Vector3, Transform, TransformBundle},
-    ecs::{World, WorldExt},
+    ecs::{WorldExt},
     error::Error,
     input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{
-        camera::Camera,
-        light::{Light, PointLight},
         mtl::{Material, MaterialDefaults},
-        palette::{Srgb, Srgba},
-        plugins::{RenderShaded3D, RenderSkybox, RenderToWindow},
+        palette::{Srgba},
+        plugins::{RenderShaded3D, RenderToWindow},
         rendy::{
-            mesh::{MeshBuilder, Normal, Position, TexCoord},
+            mesh::{MeshBuilder, Normal, Position},
             texture::palette::load_from_srgba,
         },
         types::{DefaultBackend, Mesh, MeshData},
@@ -24,7 +22,7 @@ use std::io::Cursor;
 use obj::{load_obj, Obj};
 
 mod objects;
-use crate::objects::{camera, sphere};
+use crate::objects::{camera, light};
 
 struct MyState;
 
@@ -72,6 +70,7 @@ impl SimpleState for MyState {
         world.insert(0usize);
 
         camera::init_camera(world);
+        light::init_light(world);
 
         // Add custom cube object to scene
         let (mesh, mtl) = {
