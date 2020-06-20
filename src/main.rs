@@ -126,7 +126,7 @@ fn main() -> amethyst::Result<()> {
             RenderingBundle::<DefaultBackend>::new()
                 .with_plugin(
                     RenderToWindow::from_config_path(display_config_path)?
-                        .with_clear([1.0, 1.0, 1.0, 1.0]),
+                        .with_clear([1.0, 0.95, 0.95, 1.0]),
                 )
                 .with_plugin(RenderShaded3D::default()),
         )?
