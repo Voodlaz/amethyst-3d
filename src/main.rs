@@ -1,16 +1,18 @@
 use amethyst::{
     assets::{Format as AssetFormat, Handle, Loader},
     core::{math::Vector3, Transform, TransformBundle},
-    ecs::{WorldExt},
+    ecs::{World, WorldExt},
     error::Error,
     input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{
+        camera::Camera,
+        light::{Light, PointLight},
         mtl::{Material, MaterialDefaults},
-        palette::{Srgba},
-        plugins::{RenderShaded3D, RenderToWindow},
+        palette::{Srgb, Srgba},
+        plugins::{RenderShaded3D, RenderSkybox, RenderToWindow},
         rendy::{
-            mesh::{MeshBuilder, Normal, Position},
+            mesh::{MeshBuilder, Normal, Position, TexCoord},
             texture::palette::load_from_srgba,
         },
         types::{DefaultBackend, Mesh, MeshData},
@@ -18,6 +20,7 @@ use amethyst::{
     },
     utils::application_root_dir,
 };
+
 use std::io::Cursor;
 use obj::{load_obj, Obj};
 
@@ -121,18 +124,18 @@ fn main() -> amethyst::Result<()> {
     let display_config_path = config_dir.join("display.ron");
 
     let game_data = GameDataBuilder::default()
+        .with_bundle(InputBundle::<StringBindings>::new())?
+        .with_bundle(TransformBundle::new())?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
-                .with_plugin(
-                    RenderToWindow::from_config_path(display_config_path)?
-                        .with_clear([1.0, 0.95, 0.95, 1.0]),
-                )
-                .with_plugin(RenderShaded3D::default()),
-        )?
-        .with_bundle(TransformBundle::new())?;
-
+                .with_plugin(RenderToWindow::from_config_path(display_config_path)?)
+                .with_plugin(RenderShaded3D::default())
+                .with_plugin(RenderSkybox::with_colors(
+                    Srgb::new(0.82, 0.51, 0.50),
+                    Srgb::new(0.18, 0.11, 0.85),
+                )),
+        )?;
     let mut game = Application::new(assets_dir, MyState, game_data)?;
     game.run();
-
     Ok(())
 }
