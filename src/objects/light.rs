@@ -7,8 +7,8 @@ use amethyst::prelude::*;
 
 pub fn init_light(world: &mut World) {
     let light: Light = PointLight {
-        intensity: 1000.0,
-        radius: 1.0,
+        intensity: 100.0,
+        radius: 50.0,
         color: Srgb::new(1.0, 1.0, 1.0),
         ..Default::default()
     }
